@@ -4,6 +4,6 @@ add_library(LIB SHARED ${LIB_FILES})
 
 target_include_directories(LIB PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
-add_executable(Main 01-Create_a_window/Main.cpp)
+add_executable(Main 02-Create_a_triangle/Main.cpp)
 
 target_link_libraries(Main PUBLIC LIB ${GLFW_DLL})
