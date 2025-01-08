@@ -1,13 +1,9 @@
 project(src)
 
-add_library(GLAD_LIB SHARED glad.c)
+add_library(LIB SHARED ${LIB_FILES})
 
-target_include_directories(GLAD_LIB
-    PUBLIC
-    ${INCLUDE_DIR}
-)
-include_directories(${GLFW_INCLUDE_DIR})
+target_include_directories(LIB PUBLIC ${PROJECT_SOURCE_DIR}/include)
 
-add_executable(Main Main.cpp)
+add_executable(Main 01-Create_a_window/Main.cpp)
 
-target_link_libraries(Main PRIVATE GLAD_LIB ${GLFW_DLL})
+target_link_libraries(Main PUBLIC LIB ${GLFW_DLL})

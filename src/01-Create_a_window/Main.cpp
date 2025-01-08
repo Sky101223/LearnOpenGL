@@ -32,6 +32,12 @@ static void Initialize()
 #endif   
 }
 
+static void Viewport(GLFWwindow *window)
+{
+    glViewport(0, 0, WIDTH, HEIGHT);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+}
+
 int main()
 {
     Initialize();
@@ -41,18 +47,17 @@ int main()
     {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
-        return false;
+        return -1;
     }
     glfwMakeContextCurrent(window);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
-        return false;
+        return -1;
     }
 
-    glViewport(0, 0, WIDTH, HEIGHT);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    Viewport(window);
 
     while (!glfwWindowShouldClose(window))
     {
