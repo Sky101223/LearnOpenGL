@@ -3,6 +3,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "VertexBuffer.h"
+#include "VertexBufferLayout.h"
+#include "VertexArray.h"
 #include "LoadShader.h"
 
 static void framebuffer_size_callback(GLFWwindow *window, int width, int height)
@@ -62,28 +65,21 @@ int main()
             0.0f,  0.5f, 0.0f
         };
 
-        std::vector<const char*> paths;
+        std::vector<const GLchar*> paths;
         paths.push_back("media/shaders/triangles/triangle.vert");
         paths.push_back("media/shaders/triangles/triangle.frag");
 
         Shader shaders(paths);
-        GLuint VAO;
-        GLuint VBO;
+        VertexBuffer VBO(vertices, sizeof(vertices));
+        VertexArray VAO;
+        VertexBufferLayout layout;
 
+        layout.push(TYPE::FLAOT, 3);
+        VAO.addBuffer(VBO, layout);
+
+        VAO.unbind();
+        VBO.unbind();
         shaders.unbind();
-
-        glGenBuffers(1, &VBO);
-        glGenVertexArrays(1, &VAO);
-
-        glBindVertexArray(VAO);
-
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (const void*)0);
-
-        glEnableVertexAttribArray(0);
-
-        glBindVertexArray(0);
 
         Viewport(window);
 
@@ -95,16 +91,13 @@ int main()
             glClear(GL_COLOR_BUFFER_BIT);
 
             shaders.bind();
+            VAO.bind();
 
-            glBindVertexArray(VAO);
             glDrawArrays(GL_TRIANGLES, 0, 3);
 
             glfwSwapBuffers(window);
             glfwPollEvents();
         }
-
-        glDeleteBuffers(1, &VBO);
-        glDeleteVertexArrays(1, &VAO);
     }
 
     glfwTerminate();
