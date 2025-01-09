@@ -27,6 +27,7 @@ public:
     void setInt(const std::string &name, GLint value) const;
     void setFloat(const std::string &name, GLfloat value) const;
     void setFloat(const std::string &name, GLfloat red, GLfloat green, GLfloat bule) const;
+    void setFloat(const std::string &name, GLfloat red, GLfloat green, GLfloat bule, GLfloat alpha) const;
 
     ~Shader();
 private:

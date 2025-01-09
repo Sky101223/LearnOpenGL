@@ -81,6 +81,11 @@ void Shader::setFloat(const std::string &name, GLfloat red, GLfloat green, GLflo
     glUniform3f(glGetUniformLocation(m_RendererID, name.c_str()), red, green, bule);
 }
 
+void Shader::setFloat(const std::string &name, GLfloat red, GLfloat green, GLfloat bule, GLfloat alpha) const
+{
+    glUniform4f(glGetUniformLocation(m_RendererID, name.c_str()), red, green, bule, alpha);
+}
+
 Shader::~Shader()
 {
     glDeleteProgram(m_RendererID);
