@@ -1,6 +1,6 @@
 #include "LoadShader.h"
 
-Shader::Shader(std::vector<const GLchar*> &path)
+Shader::Shader(std::vector<const char*> &path)
 {
     std::vector<std::string> code;
     std::vector<std::ifstream> shaderFile(2);
@@ -27,11 +27,11 @@ Shader::Shader(std::vector<const GLchar*> &path)
         std::cerr << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ\n";
     }
 
-    std::vector<const GLchar*> shaderSource(2);
+    std::vector<const char*> shaderSource(2);
     shaderSource[VERTEX] = code[VERTEX].c_str();
     shaderSource[FRAGMENT] = code[FRAGMENT].c_str();
 
-    std::vector<GLuint> shader(2);
+    std::vector<unsigned int> shader(2);
     shader[VERTEX] = glCreateShader(GL_VERTEX_SHADER);
     shader[FRAGMENT] = glCreateShader(GL_FRAGMENT_SHADER);
 
@@ -61,27 +61,27 @@ void Shader::unbind() const
     glUseProgram(0);
 }
 
-void Shader::setBool(const std::string &name, GLboolean value) const
+void Shader::setBool(const std::string &name, bool value) const
 {
     glUniform1i(glGetUniformLocation(m_RendererID, name.c_str()), static_cast<int>(value));
 }
 
-void Shader::setInt(const std::string &name, GLint value) const
+void Shader::setInt(const std::string &name, int value) const
 {
     glUniform1i(glGetUniformLocation(m_RendererID, name.c_str()), value);
 }
 
-void Shader::setFloat(const std::string &name, GLfloat value) const
+void Shader::setFloat(const std::string &name, float value) const
 {
     glUniform1f(glGetUniformLocation(m_RendererID, name.c_str()), value);
 }
 
-void Shader::setFloat(const std::string &name, GLfloat red, GLfloat green, GLfloat bule) const
+void Shader::setFloat(const std::string &name, float red, float green, float bule) const
 {
     glUniform3f(glGetUniformLocation(m_RendererID, name.c_str()), red, green, bule);
 }
 
-void Shader::setFloat(const std::string &name, GLfloat red, GLfloat green, GLfloat bule, GLfloat alpha) const
+void Shader::setFloat(const std::string &name, float red, float green, float bule, float alpha) const
 {
     glUniform4f(glGetUniformLocation(m_RendererID, name.c_str()), red, green, bule, alpha);
 }
@@ -98,7 +98,7 @@ void Shader::closeAllFiles(std::vector<std::ifstream> &files)
     for (size_t i = 0; i < files.size(); i++) { files[i].close(); }
 }
 
-void Shader::checkCompileErrors(GLuint &shader, std::string type)
+void Shader::checkCompileErrors(unsigned int &shader, std::string type)
 {
     GLint success;
     GLchar infoLog[1024];
@@ -128,7 +128,7 @@ void Shader::checkCompileErrors(GLuint &shader, std::string type)
     }
 }
 
-void Shader::deleteAllShaders(std::vector<GLuint> &shaders)
+void Shader::deleteAllShaders(std::vector<unsigned int> &shaders)
 {
     if (shaders.empty()) { return; }
 

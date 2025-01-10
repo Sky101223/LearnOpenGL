@@ -6,14 +6,14 @@
 class VertexBuffer
 {
 public:
-    VertexBuffer(const void *data, GLuint size);
+    VertexBuffer(const void *data, unsigned int size);
 
     void bind() const;
     void unbind() const;
 
     ~VertexBuffer();
 private:
-    GLuint m_RendererID;
+    unsigned int m_RendererID;
 };
 
 #endif

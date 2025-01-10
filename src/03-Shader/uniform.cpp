@@ -60,13 +60,13 @@ int main(void)
     }
 
     {
-        GLfloat vertices[] = {
+        float vertices[] = {
             -0.5f, -0.5f, 0.0f,
              0.5f, -0.5f, 0.0f,
              0.0f,  0.5f, 0.0f
         };
 
-        std::vector<const GLchar*> paths;
+        std::vector<const char*> paths;
         paths.push_back("media/shaders/triangles/triangle.vert");
         paths.push_back("media/shaders/triangles/triangle.frag");
 
@@ -93,11 +93,11 @@ int main(void)
             
             ourShader.bind();
 
-            GLdouble timeValue = glfwGetTime();
-            GLfloat redValue = static_cast<GLfloat>(std::sin(timeValue) / 2.0 + 0.3);
-            GLfloat greenValue = static_cast<GLfloat>(std::sin(timeValue) / 2.0 + 0.4);
-            GLfloat buleValue = static_cast<GLfloat>(std::sin(timeValue) / 2.0 + 0.8);
-            GLfloat alphaValue = static_cast<GLfloat>(std::sin(timeValue) / 2.0 + 0.5);
+            double timeValue = glfwGetTime();
+            float redValue = static_cast<float>(std::sin(timeValue) / 2.0 + 0.3);
+            float greenValue = static_cast<float>(std::sin(timeValue) / 2.0 + 0.4);
+            float buleValue = static_cast<float>(std::sin(timeValue) / 2.0 + 0.8);
+            float alphaValue = static_cast<float>(std::sin(timeValue) / 2.0 + 0.5);
 
             ourShader.setFloat("ourColor", redValue, greenValue, buleValue, alphaValue);
             VAO.bind();

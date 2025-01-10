@@ -1,10 +1,14 @@
 #include <iostream>
+#include <cmath>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "Renderer.h"
+
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
+#include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "LoadShader.h"
 
@@ -59,27 +63,39 @@ int main()
     }
 
     {
-        GLfloat vertices[] = {
+        float vertices[] = {
+             0.5f,  0.5f, 0.0f,
+             0.5f, -0.5f, 0.0f,
             -0.5f, -0.5f, 0.0f,
-            0.5f, -0.5f, 0.0f,
-            0.0f,  0.5f, 0.0f
+            -0.5f,  0.5f, 0.0f
         };
 
-        std::vector<const GLchar*> paths;
+        unsigned int indices[] = {
+            0, 1, 3,
+            1, 2, 3
+        };
+
+        std::vector<const char*> paths;
         paths.push_back("media/shaders/triangles/triangle.vert");
         paths.push_back("media/shaders/triangles/triangle.frag");
 
-        Shader shaders(paths);
-        VertexBuffer VBO(vertices, sizeof(vertices));
-        VertexArray VAO;
+        VertexBuffer vb(vertices, sizeof(vertices));
+        VertexArray va;
+
         VertexBufferLayout layout;
-
         layout.push(TYPE::FLAOT, 3);
-        VAO.addBuffer(VBO, layout);
+        va.addBuffer(vb, layout);
 
-        VAO.unbind();
-        VBO.unbind();
-        shaders.unbind();
+        IndexBuffer ib(indices, sizeof(indices));
+
+        Shader ourShader(paths);
+
+        va.unbind();
+        vb.unbind();
+        ib.unbind();
+        ourShader.unbind();
+
+        Renderer renderer;
 
         Viewport(window);
 
@@ -87,13 +103,21 @@ int main()
         {
             processInput(window);
 
-            glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
+            // glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+            renderer.clear();
 
-            shaders.bind();
-            VAO.bind();
+            ourShader.bind();
 
-            glDrawArrays(GL_TRIANGLES, 0, 3);
+            GLdouble timeValue = glfwGetTime();
+            float redValue = static_cast<float>(std::sin(timeValue) / 2.0 + 0.3);
+            float greenValue = static_cast<float>(std::sin(timeValue) / 2.0 + 0.4);
+            float buleValue = static_cast<float>(std::sin(timeValue) / 2.0 + 0.8);
+            float alphaValue = static_cast<float>(std::sin(timeValue) / 2.0 + 0.5);
+
+            ourShader.setFloat("ourColor", redValue, greenValue, buleValue, alphaValue);
+            renderer.draw(va, ib, ourShader);
+
+            glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
             glfwSwapBuffers(window);
             glfwPollEvents();

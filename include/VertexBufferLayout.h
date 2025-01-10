@@ -14,11 +14,11 @@ enum TYPE
 
 struct VertexBufferElement
 {
-    GLuint type;
-    GLuint count;
-    GLuint normalized;
+    unsigned int type;
+    unsigned int count;
+    unsigned int normalized;
 
-    static GLuint GetSizeOfType(GLuint type)
+    static unsigned int GetSizeOfType(unsigned int type)
     {
         switch (type)
         {
@@ -37,7 +37,7 @@ public:
         : m_Stride(0)
     { }
 
-    void push(TYPE type, GLuint count)
+    void push(TYPE type, unsigned int count)
     {
         switch (type)
         {
@@ -66,7 +66,7 @@ public:
     inline unsigned int getStride() const { return m_Stride; }
 private:
     std::vector<VertexBufferElement> m_Elements;
-    GLuint m_Stride;
+    unsigned int m_Stride;
 };
 
 #endif
