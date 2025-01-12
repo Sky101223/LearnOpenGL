@@ -2,7 +2,7 @@
 
 #include <vendor/stb_image/stb_image.h>
 
-Texture::Texture(const std::string &filePath)
+Texture::Texture(const std::string &filePath, Level level)
     : m_LoadBuffer(nullptr),
     m_Height(0),
     m_Width(0),
@@ -17,15 +17,21 @@ Texture::Texture(const std::string &filePath)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);   
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_Width, m_Height, 0, GL_RGB, GL_UNSIGNED_BYTE, m_LoadBuffer);
-    glGenerateMipmap(GL_TEXTURE_2D);   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    if (!m_LoadBuffer)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    
+    switch (level)
     {
-        std::cerr << "Failed to load texture\n";
-        stbi_image_free(m_LoadBuffer);
+    case Level::RGB:
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_Width, m_Height, 0, GL_RGB, GL_UNSIGNED_BYTE, m_LoadBuffer);
+        break;
+    case Level::RGBA:
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_LoadBuffer);
+        break;
     }
+    glGenerateMipmap(GL_TEXTURE_2D);   
+
+    if (m_LoadBuffer)
+        stbi_image_free(m_LoadBuffer);
 }
 
 Texture::~Texture()
@@ -33,10 +39,10 @@ Texture::~Texture()
     glDeleteTextures(1, &m_RendererID);
 }
 
-void Texture::bind(unsigned int solt /*= 0*/) const
+void Texture::bind(unsigned int solt) const
 {
     glActiveTexture(GL_TEXTURE0 + solt);
-    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindTexture(GL_TEXTURE_2D, m_RendererID);
 }
 
 void Texture::unbind() const

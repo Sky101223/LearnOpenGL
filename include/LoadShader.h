@@ -31,9 +31,9 @@ public:
 
     ~Shader();
 private:
-    inline void closeAllFiles(std::vector<std::ifstream> &files);
-    inline void checkCompileErrors(unsigned int &shader, std::string type);
-    inline void deleteAllShaders(std::vector<unsigned int> &shaders);
+    void closeAllFiles(std::vector<std::ifstream> &files);
+    void checkCompileErrors(unsigned int &shader, std::string type);
+    void deleteAllShaders(std::vector<unsigned int> &shaders);
 
     unsigned int m_RendererID;
 };

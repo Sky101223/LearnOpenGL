@@ -12,40 +12,16 @@
 #include "LoadShader.h"
 #include "Texture.h"
 
-static void framebuffer_size_callback(GLFWwindow *window, int width, int height)
-{
-    glViewport(0, 0, width, height);
-}
+static void framebuffer_size_callback(GLFWwindow *window, int width, int height);
+static void processInput(GLFWwindow *window);
 
-static void processInput(GLFWwindow *window)
-{
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GL_TRUE)
-    {
-        glfwSetWindowShouldClose(window, GL_TRUE);
-    }
-}
-
-static void Initialize()
+int main()
 {
     glfwInit();
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#if __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif   
-}
-
-static void Viewport(GLFWwindow *window)
-{
-    glViewport(0, 0, 800, 600);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-}
-
-int main()
-{
-    Initialize();
 
     GLFWwindow *window = glfwCreateWindow(800, 600, "Texture", NULL, NULL);
     if (window == NULL)
@@ -92,7 +68,12 @@ int main()
 
         Shader ourShader(paths);
 
-        Texture texture("media/container.jpg", Level::RGB);
+        Texture texture1("media/container.jpg", Level::RGB);
+        Texture texture2("media/awesomeface.png", Level::RGBA);
+
+        ourShader.bind();
+        ourShader.setInt("texture1", 0);
+        ourShader.setInt("texture2", 1);
 
         va.unbind();
         vb.unbind();
@@ -101,15 +82,17 @@ int main()
 
         Renderer renderer;
 
-        Viewport(window);
+        glViewport(0, 0, 800, 600);
+        glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
         while (!glfwWindowShouldClose(window))
         {
             processInput(window);
 
-            // glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             renderer.clear();
 
+            texture1.bind(0);
+            texture2.bind(1);
             renderer.draw(va, ib, ourShader);
 
             glfwSwapBuffers(window);
@@ -119,4 +102,15 @@ int main()
 
     glfwTerminate();
     return 0;
+}
+
+void framebuffer_size_callback(GLFWwindow *window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+}
+
+void processInput(GLFWwindow *window)
+{
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GL_TRUE)
+        glfwSetWindowShouldClose(window, GL_TRUE);
 }
