@@ -1,7 +1,7 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-enum Level
+enum Format
 {
     RGB,
     RGBA
@@ -13,10 +13,10 @@ enum Level
 class Texture
 {
 public:
-    Texture(const std::string &filePath, Level level);
+    Texture(const std::string &filePath, Format format);
     ~Texture();
 
-    void bind(unsigned int solt) const;
+    void bind(unsigned int solt = 0) const;
     void unbind() const;
 
     inline int getWidth() const { return m_Width; }

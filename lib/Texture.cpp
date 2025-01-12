@@ -2,7 +2,7 @@
 
 #include <vendor/stb_image/stb_image.h>
 
-Texture::Texture(const std::string &filePath, Level level)
+Texture::Texture(const std::string &filePath, Format format)
     : m_LoadBuffer(nullptr),
     m_Height(0),
     m_Width(0),
@@ -19,12 +19,12 @@ Texture::Texture(const std::string &filePath, Level level)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     
-    switch (level)
+    switch (format)
     {
-    case Level::RGB:
+    case Format::RGB:
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_Width, m_Height, 0, GL_RGB, GL_UNSIGNED_BYTE, m_LoadBuffer);
         break;
-    case Level::RGBA:
+    case Format::RGBA:
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_LoadBuffer);
         break;
     }

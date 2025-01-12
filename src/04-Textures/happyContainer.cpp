@@ -69,9 +69,9 @@ int main()
         IndexBuffer ib(indices, sizeof(indices));
 
         Shader ourShader(paths);
-
-        Texture texture1("media/container.jpg", Level::RGB);
-        Texture texture2("media/awesomeface.png", Level::RGBA);
+        
+        Texture texture1("media/container.jpg", Format::RGB);
+        Texture texture2("media/awesomeface.png", Format::RGBA);
 
         ourShader.bind();
         ourShader.setInt("texture1", 0);
