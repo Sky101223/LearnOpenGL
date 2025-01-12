@@ -1,9 +1,8 @@
-#include <iostream>
-
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "Renderer.h"
+#include <iostream>
+#include <array>
 
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
@@ -11,6 +10,8 @@
 #include "VertexArray.h"
 #include "LoadShader.h"
 #include "Texture.h"
+
+#include "Renderer.h"
 
 static void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 static void processInput(GLFWwindow *window);
@@ -51,9 +52,10 @@ int main()
             1, 2, 3
         };
 
-        std::vector<const char*> paths;
-        paths.push_back("media/shaders/textures/texture.vert");
-        paths.push_back("media/shaders/textures/texture.frag");
+        std::array<const char*, 2> paths {
+            "media/shaders/textures/texture.vert",
+            "media/shaders/textures/texture.frag"
+        };
 
         VertexBuffer vb(vertices, sizeof(vertices));
         VertexArray va;

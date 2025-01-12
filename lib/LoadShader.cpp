@@ -1,16 +1,16 @@
 #include "LoadShader.h"
 
-Shader::Shader(std::vector<const char*> &path)
+Shader::Shader(std::array<const char*, 2> &path)
 {
-    std::vector<std::string> code;
-    std::vector<std::ifstream> shaderFile(2);
+    std::array<std::string, 2> code;
+    std::array<std::ifstream, 2> shaderFile;
     
     shaderFile[VERTEX].exceptions(std::ifstream::failbit | std::ifstream::badbit);
     shaderFile[FRAGMENT].exceptions(std::ifstream::failbit | std::ifstream::badbit);
 
     try
     {
-        std::vector<std::stringstream> shaderStream(2);
+        std::array<std::stringstream, 2> shaderStream;
         shaderFile[VERTEX].open(path[VERTEX]);
         shaderFile[FRAGMENT].open(path[FRAGMENT]);
 
@@ -19,21 +19,23 @@ Shader::Shader(std::vector<const char*> &path)
 
         closeAllFiles(shaderFile);
 
-        code.push_back(shaderStream[VERTEX].str());
-        code.push_back(shaderStream[FRAGMENT].str());
+        code[VERTEX] = shaderStream[VERTEX].str();
+        code[FRAGMENT] = shaderStream[FRAGMENT].str();
     }
     catch(std::ifstream::failure fileError)
     {
         std::cerr << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ\n";
     }
 
-    std::vector<const char*> shaderSource(2);
-    shaderSource[VERTEX] = code[VERTEX].c_str();
-    shaderSource[FRAGMENT] = code[FRAGMENT].c_str();
+    std::array<const char*, 2> shaderSource {
+        code[VERTEX].c_str(),
+        code[FRAGMENT].c_str()
+    };
 
-    std::vector<unsigned int> shader(2);
-    shader[VERTEX] = glCreateShader(GL_VERTEX_SHADER);
-    shader[FRAGMENT] = glCreateShader(GL_FRAGMENT_SHADER);
+    std::array<unsigned int, 2> shader {
+        glCreateShader(GL_VERTEX_SHADER),
+        glCreateShader(GL_FRAGMENT_SHADER)
+    };
 
     glShaderSource(shader[VERTEX], 1, &shaderSource[VERTEX], NULL);
     glShaderSource(shader[FRAGMENT], 1, &shaderSource[FRAGMENT], NULL);
@@ -91,7 +93,7 @@ Shader::~Shader()
     glDeleteProgram(m_RendererID);
 }
 
-void Shader::closeAllFiles(std::vector<std::ifstream> &files)
+void Shader::closeAllFiles(std::array<std::ifstream, 2> &files)
 {
     if (files.empty()) { return; }
 
@@ -128,7 +130,7 @@ void Shader::checkCompileErrors(unsigned int &shader, std::string type)
     }
 }
 
-void Shader::deleteAllShaders(std::vector<unsigned int> &shaders)
+void Shader::deleteAllShaders(std::array<unsigned int, 2> &shaders)
 {
     if (shaders.empty()) { return; }
 

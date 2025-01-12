@@ -5,7 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <vector>
+#include <array>
 
 #include <glad/glad.h>
 
@@ -18,7 +18,7 @@
 class Shader
 {
 public:
-    Shader(std::vector<const char*> &path);
+    Shader(std::array<const char*, 2> &path);
     
     void bind() const;
     void unbind() const;
@@ -31,9 +31,9 @@ public:
 
     ~Shader();
 private:
-    void closeAllFiles(std::vector<std::ifstream> &files);
+    void closeAllFiles(std::array<std::ifstream, 2> &files);
     void checkCompileErrors(unsigned int &shader, std::string type);
-    void deleteAllShaders(std::vector<unsigned int> &shaders);
+    void deleteAllShaders(std::array<unsigned int, 2> &shaders);
 
     unsigned int m_RendererID;
 };
