@@ -101,12 +101,22 @@ int main()
             texture1.bind();
             texture2.bind(1);
 
-            glm::mat4 transform = glm::mat4(1.0f);
-            transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
+            // glm::mat4 transform = glm::mat4(1.0f);
+            // transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
+            // transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+
+            glm::mat4 transform;
             transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+            transform = glm::translate(transform, glm::vec3(0.5f, -0.5f, 0.0f));
 
             unsigned int transformLoc = glGetUniformLocation(ourShader.getRendererID(), "transform");
             glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+
+            transform = glm::mat4(1.0f); // reset it to identity matrix
+            transform = glm::translate(transform, glm::vec3(-0.5f, 0.5f, 0.0f));
+            float scaleAmount = static_cast<float>(sin(glfwGetTime()));
+            transform = glm::scale(transform, glm::vec3(scaleAmount, scaleAmount, scaleAmount));
+            glUniformMatrix4fv(transformLoc, 1, GL_FALSE, &transform[0][0]);
 
             renderer.draw(va, ib, ourShader);
 
