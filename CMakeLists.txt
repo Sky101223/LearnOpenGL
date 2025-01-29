@@ -18,5 +18,6 @@ set(GLFW_DLL "D:/GLFW_DLL/lib-mingw-w64/glfw3.dll")
 aux_source_directory(${PROJECT_SOURCE_DIR}/lib LIB_FILES)
 
 include_directories(include)
+include_directories(include/vendor)
 
 add_subdirectory(src)
